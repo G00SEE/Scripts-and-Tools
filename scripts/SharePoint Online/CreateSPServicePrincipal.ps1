@@ -1,12 +1,30 @@
-﻿#Connect-MsolService
-#Remove-MsolServicePrincipal -AppPrincipalId "9542ae7b-5750-49d6-860c-1433e3f6b995"
-
-#Get-MsolServicePrincipal -AppPrincipalId "e5a6fada-b35b-4547-ae2d-224e204d3a8b" #created manually before
-#Get-MsolServicePrincipal -AppPrincipalId "9542ae7b-5750-49d6-860c-1433e3f6b995" ##newone, removed
-Get-MsolServicePrincipal -AppPrincipalId "56b618fa-a68e-4de1-af72-1db8d2ddb3d3"
+﻿$principalNames =  Import-Csv -path "C:\Users\Administrator\Downloads\SharePointScriptsTesting\onePrincipalNames.csv"
 
 
-New-MsolServicePrincipal -ServicePrincipalName "GR-PS_Demo" -DisplayName "GR-PS_Demo" -Addresses (New-MsolServicePrincipalAddresses -Address "https://www.spiriontestcom.com/default.aspx" )
+function new-AES256Key {
+    $random = [System.Security.Cryptography.RandomNumberGenerator]::Create();
+    $buffer = New-Object byte[] 32;
+    $random.GetBytes($buffer);
+    [BitConverter]::ToString($buffer).Replace("-", [string]::Empty);
+}
+
+Connect-MsolService
+
+ $output = foreach ($principal in $principalNames){
+
+    #write-output $principal.PrincipalName;
+    $clientID = [guid]::NewGuid();
+    $clientSecret = new-AES256Key;
+    New-MsolServicePrincipal -AppPrincipalId $clientID -ServicePrincipalName $principal.PrincipalName  -DisplayName $principal.PrincipalName -Type Symmetric -Usage Verify -Value $clientSecret  -Addresses (New-MsolServicePrincipalAddresses -Address "https://www.spiriontestcom.com/default.aspx" ) | Out-Null
+    [PSCustomOBject] @{
+        PrincipalName = $principal.PrincipalName
+        ClientID = $clientID
+        Secret = $clientSecret
+    }
+   
 
 
+}
+$csvOutput = $outPut | ConvertTo-Csv -NoTypeInformation
 
+$csvOutput | out-file -LiteralPath 'C:\Users\Administrator\Downloads\SharePointScriptsTesting\oneoutput.csv'  
