@@ -1,0 +1,16 @@
+#function New-SharePointAddIn {
+#    [CmdletBinding()]
+#    param (
+#        $ServicePrincipalName,
+#        [string]$ClientID,
+#        [string]$DisplayName,
+#        [string]$ClientSecret,
+#        [string]$AppUrl
+#    )
+#
+#    Connect-MsolService 
+#    New-MsolServicePrincipal -ServicePrincipalNames $servicePrincipalName -AppPrincipalId $clientID -DisplayName $appName -Type Symmetric -Usage Verify -Value $newClientSecret -Addresses (New-MsolServicePrincipalAddresses -Address $appUrl) | Out-Null
+#    New-MsolServicePrincipalCredential -AppPrincipalId $clientId -Type Symmetric -Usage Sign -Value $newClientSecret
+#    New-MsolServicePrincipalCredential -AppPrincipalId $clientId -Type Password -Usage Verify -Value $newClientSecret
+#} 
+Get-Date
