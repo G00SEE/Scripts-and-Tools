@@ -1,4 +1,4 @@
-﻿$principalNames =  Import-Csv -path "C:\Users\Administrator\Downloads\SharePointScriptsTesting\onePrincipalNames.csv"
+﻿$principalNames =  Import-Csv -path "C:\Users\Administrator\Downloads\SharePointScriptsTesting\PrincipalNames.csv"
 
 
 function new-AES256Key {
@@ -27,4 +27,4 @@ Connect-MsolService
 }
 $csvOutput = $outPut | ConvertTo-Csv -NoTypeInformation
 
-$csvOutput | out-file -LiteralPath 'C:\Users\Administrator\Downloads\SharePointScriptsTesting\oneoutput.csv'  
+$csvOutput | out-file -LiteralPath 'C:\Users\Administrator\Downloads\SharePointScriptsTesting\output.csv'  

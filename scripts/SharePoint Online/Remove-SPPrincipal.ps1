@@ -55,4 +55,10 @@
 
 }
 
-Remove-SPPrincipal -AppInstanceId '8a651ad9-6af5-4405-8d7a-eb1f1e1592de' -WebUrl 'http://spiriontestcom-admin.sharepoint.com'
+$sites =  Import-Csv -path "C:\Users\Administrator\Downloads\SharePointScriptsTesting\sitesAndClientIDs_toDelete.csv"
+
+foreach ($site in $sites){
+
+Remove-SPPrincipal -AppInstanceId $site.ClientID -WebUrl $site.Site
+
+}
